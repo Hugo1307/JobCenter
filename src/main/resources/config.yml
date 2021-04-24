@@ -1,0 +1,8 @@
+JobCenter:
+  JobWeek:
+    StartDay: 'Monday'
+
+  #Number of jobs needed to upgrade jobs category.
+  JobsRank:
+    Advanced: 4
+    Expert: 4

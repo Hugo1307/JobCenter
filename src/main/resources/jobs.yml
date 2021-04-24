@@ -1,0 +1,34 @@
+Jobs:
+  BasicJobs:
+    Description: 'This is the description for basic jobs menu'
+    Jobs:
+      '1':
+        Name: 'Job 1'
+        Description: 'Craft {amount} {item}'
+        Type: 'CRAFT'
+        Item: 'IRON_SWORD'
+        AmountRequired: 20
+        Payment: 1000
+        Available: 10
+  AdvancedJobs:
+    Description: 'This is the description for advanced jobs menu'
+    Jobs:
+      '1':
+        Name: 'Job 1'
+        Description: 'Craft {amount} {item}'
+        Type: 'CRAFT'
+        Item: 'IRON_SWORD'
+        AmountRequired: 20
+        Payment: 1000
+        Available: 10
+  ExpertJobs:
+    Description: 'This is the description for expert jobs menu'
+    Jobs:
+      '1':
+        Name: 'Job 1'
+        Description: 'Craft {amount} {item}'
+        Type: 'CRAFT'
+        Item: 'IRON_SWORD'
+        AmountRequired: 20
+        Payment: 1000
+        Available: 10

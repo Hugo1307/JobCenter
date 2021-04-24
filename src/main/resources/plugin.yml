@@ -1,0 +1,10 @@
+name: JobCenter
+main: com.hugo1307.jobcenter.Main
+version: 1.0
+description: JobCenter plugin.
+author: Hugo1307
+api-version: 1.8.8
+
+commands:
+  jobcenter:
+    description: JobCenter main command.
