@@ -4,11 +4,11 @@ Jobs:
     Jobs:
       '1':
         Name: 'Job 1'
-        Description: 'Craft {amount} {item}'
+        Description: 'Collect {amount} {item}'
         RewardCmd: 'say Congratulations!'
-        Type: 'CRAFT'
-        Item: 'IRON_SWORD'
-        ItemAmount: 20
+        Type: 'COLLECT'
+        Item: 'DIRT'
+        ItemAmount: 10
         Payment: 1000
         Available: 10
   AdvancedJobs:

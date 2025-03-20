@@ -33,10 +33,10 @@ public class JobsGUI extends GUIImpl {
         for (JobCategory jobCategory : JobCategory.values())
             this.itemsDescription.add(JobsConfigController.getInstance().getJobCategoryDescription(jobCategory));
 
-        ItemStack filler = new ItemStackBuilder.Builder(Material.STAINED_GLASS_PANE)
+        ItemStack filler = new ItemStackBuilder.Builder(Material.GRAY_STAINED_GLASS_PANE)
                 .itemData((short)7).name(" ").build().toItemStack();
 
-        ItemStack basicJobsItem = new ItemStackBuilder.Builder(Material.WOOD)
+        ItemStack basicJobsItem = new ItemStackBuilder.Builder(Material.OAK_WOOD)
                 .name(ChatColor.GRAY + "Basic Jobs").lore(Collections.singletonList(itemsDescription.get(0))).build().toItemStack();
 
         ItemStack advancedJobsItem = new ItemStackBuilder.Builder(Material.EMERALD_BLOCK)
@@ -65,12 +65,12 @@ public class JobsGUI extends GUIImpl {
         event.setCancelled(true);
 
         if (playerProfile == null) {
-            playerProfile = new PlayerProfile.Builder(whoClicked.getUniqueId()).build();
+            playerProfile = PlayerProfile.builder().withUuid(whoClicked.getUniqueId()).build();
             playerProfile.save();
         }
 
         switch (clickedItem.getType()) {
-            case WOOD:
+            case OAK_WOOD:
 
                 if (!whoClicked.hasPermission(Permissions.BASIC_JOBS.getPermission())) {
                     whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + Messages.getInstance().getNoPermission());

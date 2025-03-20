@@ -59,14 +59,14 @@ public class GUIImpl implements GUI {
     }
 
     protected void addExitButton() {
-        ItemStack backButton = new ItemStackBuilder.Builder(Material.REDSTONE_TORCH_ON)
+        ItemStack backButton = new ItemStackBuilder.Builder(Material.REDSTONE_TORCH)
                 .name(ChatColor.RED + "Back").build().toItemStack();
         this.getInventory().setItem(40, backButton);
     }
 
     protected void fill() {
 
-        ItemStack filler = new ItemStackBuilder.Builder(Material.STAINED_GLASS_PANE)
+        ItemStack filler = new ItemStackBuilder.Builder(Material.GRAY_STAINED_GLASS_PANE)
                 .itemData((short)7).name(" ").build().toItemStack();
 
         for (int inventoryItemIdx = 0; inventoryItemIdx < this.size; inventoryItemIdx++)
@@ -87,7 +87,7 @@ public class GUIImpl implements GUI {
             PlayerProfile whoClickedProfile = PlayersDataController.getInstance().loadPlayerProfile(whoClicked.getUniqueId());
 
             if (whoClickedProfile == null) {
-                whoClickedProfile = new PlayerProfile.Builder(whoClicked.getUniqueId()).build();
+                whoClickedProfile = PlayerProfile.builder().withUuid(whoClicked.getUniqueId()).build();
                 whoClickedProfile.save();
             }
 
@@ -134,7 +134,7 @@ public class GUIImpl implements GUI {
 
             whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + MessageFormat.format(Messages.getInstance().getJobSelected(), ChatColor.GREEN + jobSelected.getName() + ChatColor.GRAY));
 
-        } else if (clickedItem.getType() == Material.REDSTONE_TORCH_ON) {
+        } else if (clickedItem.getType() == Material.REDSTONE_TORCH) {
             GUIHistoryCache.getInstance().getLastGui(whoClicked.getUniqueId()).show(whoClicked);
         }
 

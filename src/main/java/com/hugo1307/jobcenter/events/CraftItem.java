@@ -44,7 +44,7 @@ public class CraftItem implements Listener {
         ClickType clickType = event.getClick();
         int realAmount = craftedItem.getAmount();
 
-        if(clickType.isShiftClick()) {
+        if (clickType.isShiftClick()) {
 
             int lowerAmount = craftedItem.getMaxStackSize() + 1000;
 
@@ -57,13 +57,11 @@ public class CraftItem implements Listener {
 
         }
 
-        int completedAmount = playerCurrentJob.getCompletedAmount()+realAmount;
-
-        playerCurrentJob.setCompletedAmount(completedAmount);
+        int completedAmount = playerCurrentJob.addCompletedAmount(realAmount);
         playerProfile.save();
 
         for (double percentage : percentageMessages)
-            if (completedAmount == playerCurrentJob.getRequiredAmount()*percentage)
+            if (playerCurrentJob.getCompletedAmount() == playerCurrentJob.getRequiredAmount()*percentage)
                 player.sendMessage(Messages.getInstance().getPluginPrefix() + MessageFormat.format(Messages.getInstance().getCompletedJobPercentage(), ChatColor.GREEN + String.valueOf(percentage*100) + ChatColor.GRAY));
 
         if (completedAmount == playerCurrentJob.getRequiredAmount()) {

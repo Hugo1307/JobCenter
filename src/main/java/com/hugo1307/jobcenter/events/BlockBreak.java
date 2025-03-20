@@ -35,9 +35,7 @@ public class BlockBreak implements Listener {
 
         if (blockBroken.getType() != playerCurrentJob.getItemMaterial()) return;
 
-        int completedAmount = playerCurrentJob.getCompletedAmount()+1;
-
-        playerCurrentJob.setCompletedAmount(completedAmount);
+        int completedAmount = playerCurrentJob.addCompletedAmount(1);
         playerProfile.save();
 
         for (double percentage : percentageMessages)

@@ -120,11 +120,12 @@ public class PlayersDataController {
             playerJob.setCompletedAmount(currentJobAmount);
         }
 
-        return new PlayerProfile.Builder(playerUUID)
-                .withJob(playerJob)
+        return PlayerProfile.builder()
+                .withUuid(playerUUID)
+                .withCurrentJob(playerJob)
                 .withCompletedJobs(completedJobs)
-                .withCoolDown(jobAcceptCoolDown)
-                .withRank(playerRank)
+                .withAcceptCoolDown(jobAcceptCoolDown)
+                .withPlayerRank(playerRank)
                 .build();
 
     }
