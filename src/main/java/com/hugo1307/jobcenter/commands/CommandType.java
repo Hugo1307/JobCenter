@@ -4,7 +4,11 @@ import lombok.Getter;
 
 public enum CommandType {
 
-    MAIN("", "MainCmd");
+    MAIN("", "MainCmd"),
+    RELOAD("reload", "ReloadCmd"),
+    RANK("rank", "RankCmd"),
+    CURRENT_JOB("job", "CurrentJobCmd"),
+    HELP("help", "HelpCmd");
 
     @Getter
     private final String args;

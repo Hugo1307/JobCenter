@@ -12,7 +12,6 @@ public class PlayerProfile implements Savable {
 
     private final UUID uuid;
     @Setter private Job currentJob;
-    @Setter private boolean isJobCompleted;
     @Setter private int completedJobs;
     @Setter private int acceptCoolDown;
     @Setter private PlayerRank playerRank;
@@ -32,11 +31,6 @@ public class PlayerProfile implements Savable {
 
         public Builder withJob(Job job){
             this.currentJob = job;
-            return this;
-        }
-
-        public Builder jobCompleted(boolean isJobCompleted) {
-            this.isJobCompleted = isJobCompleted;
             return this;
         }
 
@@ -65,7 +59,6 @@ public class PlayerProfile implements Savable {
     public PlayerProfile(Builder builder) {
         this.uuid = builder.uuid;
         this.currentJob = builder.currentJob;
-        this.isJobCompleted = builder.isJobCompleted;
         this.completedJobs = builder.completedJobs;
         this.acceptCoolDown = builder.acceptCoolDown;
         if (builder.playerRank == null)
@@ -81,6 +74,11 @@ public class PlayerProfile implements Savable {
 
     public void delete() {
         PlayersDataController.getInstance().deletePlayerProfile(this.uuid);
+    }
+
+    public void resetJob() {
+        this.currentJob = null;
+        PlayersDataController.getInstance().resetPlayerJob(this.uuid);
     }
 
 }

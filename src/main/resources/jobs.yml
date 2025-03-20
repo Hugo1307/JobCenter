@@ -5,9 +5,10 @@ Jobs:
       '1':
         Name: 'Job 1'
         Description: 'Craft {amount} {item}'
+        RewardCmd: 'say Congratulations!'
         Type: 'CRAFT'
         Item: 'IRON_SWORD'
-        AmountRequired: 20
+        ItemAmount: 20
         Payment: 1000
         Available: 10
   AdvancedJobs:
@@ -16,6 +17,7 @@ Jobs:
       '1':
         Name: 'Job 1'
         Description: 'Craft {amount} {item}'
+        RewardCmd: 'say Congratulations!'
         Type: 'CRAFT'
         Item: 'IRON_SWORD'
         AmountRequired: 20
@@ -27,6 +29,7 @@ Jobs:
       '1':
         Name: 'Job 1'
         Description: 'Craft {amount} {item}'
+        RewardCmd: 'say Congratulations!'
         Type: 'CRAFT'
         Item: 'IRON_SWORD'
         AmountRequired: 20

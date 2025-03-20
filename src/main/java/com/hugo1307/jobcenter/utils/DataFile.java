@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public enum DataFile {
 
-    PLAYERS("players.yml");
+    PLAYERS("players.yml"), JOBS("jobsData.yml"), BLACKLIST("blacklist.yml"), WARNLIST("warnlist.yml");
 
     @Getter
     private final String fileName;
