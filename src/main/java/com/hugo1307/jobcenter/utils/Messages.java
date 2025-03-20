@@ -23,10 +23,20 @@ public class Messages {
 	private final String jobSelected;
 	private final String unableToFindJob;
 	private final String completedJobPercentage;
+	private final String jobCompleted;
+	private final String insufficientRank;
+	private final String maxJobAmountReached;
+	private final String playerNotFound;
+	private final String playerRankFound;
+	private final String unknownRank;
+	private final String playerRankSet;
+	private final String playerUnemployed;
+	private final String paymentReceived;
+	private final String unableToAcceptJob;
 	
 	private Messages() {
 		
-		this.pluginHeader = ChatColor.GRAY + "-=-=-=-=-=-=-=-=-= " + messagesConfig.getConfig().getString("PluginPrefix") + " =-=-=-=-=-=-=-=-=- ";
+		this.pluginHeader = ChatColor.GRAY + "-=-=-=-=-=-=-=-=-=-= " + messagesConfig.getConfig().getString("PluginPrefix") + ChatColor.GRAY + " =-=-=-=-=-=-=-=-=-=-";
 		 
 		this.pluginFooter = ChatColor.GRAY + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-";
 		
@@ -43,6 +53,16 @@ public class Messages {
 		this.jobSelected = messagesConfig.getConfig().getString("JobSelected");
 		this.unableToFindJob = messagesConfig.getConfig().getString("UnableToFindJob");
 		this.completedJobPercentage = messagesConfig.getConfig().getString("CompletedJobPercentage");
+		this.jobCompleted = messagesConfig.getConfig().getString("JobCompleted");
+		this.insufficientRank = messagesConfig.getConfig().getString("InsufficientRank");
+		this.maxJobAmountReached = messagesConfig.getConfig().getString("MaxJobAmountReached");
+		this.playerNotFound = messagesConfig.getConfig().getString("PlayerNotFound");
+		this.playerRankFound = messagesConfig.getConfig().getString("PlayerRankFound");
+		this.unknownRank = messagesConfig.getConfig().getString("UnknownRank");
+		this.playerRankSet = messagesConfig.getConfig().getString("PlayerRankSet");
+		this.playerUnemployed = messagesConfig.getConfig().getString("PlayerUnemployed");
+		this.paymentReceived = messagesConfig.getConfig().getString("PaymentReceived");
+		this.unableToAcceptJob = messagesConfig.getConfig().getString("UnableToAcceptJob");
 
 	}
 

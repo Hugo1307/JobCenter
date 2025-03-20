@@ -1,7 +1,10 @@
 package com.hugo1307.jobcenter.guis;
 
 import com.hugo1307.jobcenter.jobs.JobCategory;
-import com.hugo1307.jobcenter.jobs.JobsDataController;
+import com.hugo1307.jobcenter.jobs.JobsConfigController;
+import com.hugo1307.jobcenter.players.PlayerProfile;
+import com.hugo1307.jobcenter.players.PlayerRank;
+import com.hugo1307.jobcenter.players.PlayersDataController;
 import com.hugo1307.jobcenter.utils.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -9,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +31,7 @@ public class JobsGUI extends GUIImpl {
     public void build() {
 
         for (JobCategory jobCategory : JobCategory.values())
-            this.itemsDescription.add(JobsDataController.getInstance().getJobCategoryDescription(jobCategory));
+            this.itemsDescription.add(JobsConfigController.getInstance().getJobCategoryDescription(jobCategory));
 
         ItemStack filler = new ItemStackBuilder.Builder(Material.STAINED_GLASS_PANE)
                 .itemData((short)7).name(" ").build().toItemStack();
@@ -56,18 +60,60 @@ public class JobsGUI extends GUIImpl {
         ItemStack clickedItem = event.getCurrentItem();
         Player whoClicked = (Player) event.getWhoClicked();
 
+        PlayerProfile playerProfile = PlayersDataController.getInstance().loadPlayerProfile(whoClicked.getUniqueId());
+
         event.setCancelled(true);
+
+        if (playerProfile == null) {
+            playerProfile = new PlayerProfile.Builder(whoClicked.getUniqueId()).build();
+            playerProfile.save();
+        }
 
         switch (clickedItem.getType()) {
             case WOOD:
+
+                if (!whoClicked.hasPermission(Permissions.BASIC_JOBS.getPermission())) {
+                    whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + Messages.getInstance().getNoPermission());
+                    whoClicked.closeInventory();
+                    break;
+                }
+
                 BasicJobsGUI.getInstance().build();
                 BasicJobsGUI.getInstance().show(whoClicked);
                 break;
+
             case EMERALD_BLOCK:
+
+                if (!whoClicked.hasPermission(Permissions.ADVANCED_JOBS.getPermission())) {
+                    whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + Messages.getInstance().getNoPermission());
+                    whoClicked.closeInventory();
+                    break;
+                }
+
+                if (playerProfile.getPlayerRank() == PlayerRank.BASIC) {
+                    whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + MessageFormat.format(Messages.getInstance().getInsufficientRank(), ChatColor.GREEN + "Advanced" + ChatColor.GRAY));
+                    whoClicked.closeInventory();
+                    break;
+                }
+
                 AdvancedJobsGUI.getInstance().build();
                 AdvancedJobsGUI.getInstance().show(whoClicked);
                 break;
+
             case DIAMOND_BLOCK:
+
+                if (!whoClicked.hasPermission(Permissions.EXPERT_JOBS.getPermission())) {
+                    whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + Messages.getInstance().getNoPermission());
+                    whoClicked.closeInventory();
+                    break;
+                }
+
+                if (playerProfile.getPlayerRank() == PlayerRank.BASIC || playerProfile.getPlayerRank() == PlayerRank.ADVANCED) {
+                    whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + MessageFormat.format(Messages.getInstance().getInsufficientRank(), ChatColor.GREEN + "Expert" + ChatColor.GRAY));
+                    whoClicked.closeInventory();
+                    break;
+                }
+
                 ExpertJobsGUI.getInstance().build();
                 ExpertJobsGUI.getInstance().show(whoClicked);
                 break;

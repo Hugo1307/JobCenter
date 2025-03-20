@@ -16,7 +16,6 @@ public class CmdHandler implements CommandExecutor {
             new MainCmd(sender, args).runCmd();
         }else {
 
-
             CommandType commandType = CommandType.fromArgs(args[0]);
 
             if (commandType != null) {
@@ -24,10 +23,11 @@ public class CmdHandler implements CommandExecutor {
                 PluginCmd pluginCmd;
 
                 try{
-                    pluginCmd = (PluginCmd) Class.forName(this.getClass().getPackage()  + "." + commandType.getClassName())
+                    pluginCmd = (PluginCmd) Class.forName(this.getClass().getPackage().getName()  + "." + commandType.getClassName())
                             .getConstructor(CommandSender.class, String[].class).newInstance(sender, args);
                 }catch (Exception e) {
-                    Bukkit.getLogger().warning(Main.getInstance().getPluginPrefix() + "Error while obtaining plugin command class controller.");
+                    Bukkit.getLogger().warning(Main.getInstance().getPluginPrefix() + "Error while obtaining plugin's command class controller.");
+                    e.printStackTrace();
                     return false;
                 }
 

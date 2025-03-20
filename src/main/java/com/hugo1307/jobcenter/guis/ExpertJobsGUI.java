@@ -2,11 +2,12 @@ package com.hugo1307.jobcenter.guis;
 
 import com.hugo1307.jobcenter.caches.GUIHistoryCache;
 import com.hugo1307.jobcenter.jobs.Job;
+import com.hugo1307.jobcenter.jobs.JobsDataController;
 import com.hugo1307.jobcenter.players.PlayerProfile;
 import com.hugo1307.jobcenter.players.PlayersDataController;
 import com.hugo1307.jobcenter.utils.ItemStackBuilder;
 import com.hugo1307.jobcenter.jobs.JobCategory;
-import com.hugo1307.jobcenter.jobs.JobsDataController;
+import com.hugo1307.jobcenter.jobs.JobsConfigController;
 import com.hugo1307.jobcenter.utils.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,7 +31,7 @@ public class ExpertJobsGUI extends GUIImpl {
     @Override
     public void build() {
 
-        List<Job> allExpertJobs = JobsDataController.getInstance().getAllJobs(JobCategory.EXPERT_JOB);
+        List<Job> allExpertJobs = JobsConfigController.getInstance().getAllJobs(JobCategory.EXPERT_JOB);
         Queue<ItemStack> itemsToDisplay = new LinkedList<>();
 
         for (Job expertJob : allExpertJobs) {
@@ -65,46 +66,7 @@ public class ExpertJobsGUI extends GUIImpl {
 
     @Override
     public void handleClick(InventoryClickEvent inventoryClickEvent) {
-
-        Player whoClicked = (Player) inventoryClickEvent.getWhoClicked();
-        ItemStack clickedItem = inventoryClickEvent.getCurrentItem();
-        Integer jobId = jobsIds.get(clickedItem);
-
-        inventoryClickEvent.setCancelled(true);
-
-        if (jobId != null) {
-
-            PlayerProfile whoClickedProfile = PlayersDataController.getInstance().loadPlayerProfile(whoClicked.getUniqueId());
-
-            if (whoClickedProfile == null)
-                whoClickedProfile = new PlayerProfile.Builder(whoClicked.getUniqueId()).build();
-
-            if (whoClickedProfile.getCurrentJob() != null) {
-                whoClicked.closeInventory();
-                whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + Messages.getInstance().getAlreadyHasJob());
-                return;
-            }
-
-            Job jobSelected = JobsDataController.getInstance().getJob(JobCategory.EXPERT_JOB, jobId);
-
-            if (jobSelected == null) {
-                whoClicked.closeInventory();
-                whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + Messages.getInstance().getUnableToFindJob());
-                return;
-            }
-
-            whoClickedProfile.setCurrentJob(jobSelected);
-            whoClickedProfile.save();
-
-            whoClicked.closeInventory();
-
-            whoClicked.sendMessage(Messages.getInstance().getPluginPrefix() + MessageFormat.format(Messages.getInstance().getJobSelected(), ChatColor.GREEN + jobSelected.getName() + ChatColor.GRAY));
-
-
-        } else if (clickedItem.getType() == Material.REDSTONE_TORCH_ON) {
-            GUIHistoryCache.getInstance().getLastGui(whoClicked.getUniqueId()).show(whoClicked);
-        }
-
+        super.handleJobGuiClick(inventoryClickEvent, jobsIds, JobCategory.EXPERT_JOB);
     }
 
     public static ExpertJobsGUI getInstance() {

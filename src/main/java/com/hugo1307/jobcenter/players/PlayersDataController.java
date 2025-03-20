@@ -3,11 +3,14 @@ package com.hugo1307.jobcenter.players;
 import com.hugo1307.jobcenter.Main;
 import com.hugo1307.jobcenter.jobs.Job;
 import com.hugo1307.jobcenter.jobs.JobCategory;
-import com.hugo1307.jobcenter.jobs.JobsDataController;
+import com.hugo1307.jobcenter.jobs.JobsConfigController;
 import com.hugo1307.jobcenter.utils.DataAccessor;
 import com.hugo1307.jobcenter.utils.DataFile;
 import org.bukkit.Bukkit;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -23,18 +26,18 @@ public class PlayersDataController {
 
         playersDataAccessor.reloadConfig();
 
-        playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.Id",
-                playerProfile.getCurrentJob().getId());
-        playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.Category",
-                playerProfile.getCurrentJob().getCategory().toString());
-        playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.RequiredAmount",
-                playerProfile.getCurrentJob().getRequiredAmount());
-        playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.CompletedAmount",
-                playerProfile.getCurrentJob().getCompletedAmount());
-        playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.Payment",
-                playerProfile.getCurrentJob().getPayment());
-        playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.Completed",
-                playerProfile.isJobCompleted());
+        if (playerProfile.getCurrentJob() != null) {
+            playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.Id",
+                    playerProfile.getCurrentJob().getId());
+            playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.Category",
+                    playerProfile.getCurrentJob().getCategory().toString());
+            playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.RequiredAmount",
+                    playerProfile.getCurrentJob().getRequiredAmount());
+            playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.CompletedAmount",
+                    playerProfile.getCurrentJob().getCompletedAmount());
+            playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CurrentJob.Payment",
+                    playerProfile.getCurrentJob().getPayment());
+        }
         playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".CompletedJobs",
                 playerProfile.getCompletedJobs());
         playersDataAccessor.getConfig().set("Players." + playerProfile.getUuid() + ".JobAcceptCoolDown",
@@ -52,7 +55,6 @@ public class PlayersDataController {
 
         int currentJobId=0, currentJobRequiredAmount=1, completedJobs=0, jobAcceptCoolDown=0, currentJobAmount=0;
         double currentJobPayment=0d;
-        boolean currentJobCompleted=false;
         JobCategory currentJobCategory=null;
         PlayerRank playerRank;
 
@@ -85,10 +87,6 @@ public class PlayersDataController {
             currentJobPayment = playersDataAccessor.getConfig().getDouble("Players." + playerUUID + ".CurrentJob.Payment");
         }
 
-        if (playersDataAccessor.getConfig().contains("Players." + playerUUID + ".CurrentJob.Completed")) {
-            currentJobCompleted = playersDataAccessor.getConfig().contains("Players." + playerUUID + ".CurrentJob.Completed");
-        }
-
         if (playersDataAccessor.getConfig().contains("Players." + playerUUID + ".CompletedJobs")) {
             completedJobs = playersDataAccessor.getConfig().getInt("Players." + playerUUID + ".CompletedJobs");
         }else{
@@ -116,7 +114,7 @@ public class PlayersDataController {
         Job playerJob = null;
 
         if (currentJobCategory != null && currentJobId != 0) {
-            playerJob = JobsDataController.getInstance().getJob(currentJobCategory, currentJobId);
+            playerJob = JobsConfigController.getInstance().getJob(currentJobCategory, currentJobId);
             playerJob.setRequiredAmount(currentJobRequiredAmount);
             playerJob.setPayment(currentJobPayment);
             playerJob.setCompletedAmount(currentJobAmount);
@@ -127,13 +125,31 @@ public class PlayersDataController {
                 .withCompletedJobs(completedJobs)
                 .withCoolDown(jobAcceptCoolDown)
                 .withRank(playerRank)
-                .jobCompleted(currentJobCompleted)
                 .build();
 
     }
 
     public void deletePlayerProfile(UUID playerUUID) {
         playersDataAccessor.getConfig().set("Players." + playerUUID, null);
+        playersDataAccessor.saveConfig();
+    }
+
+    public void resetPlayerJob(UUID playerUUID) {
+        playersDataAccessor.getConfig().set("Players." + playerUUID.toString() + ".CurrentJob", null);
+        playersDataAccessor.saveConfig();
+    }
+
+    public List<PlayerProfile> getAllPLayerProfiles() {
+
+        playersDataAccessor.reloadConfig();
+
+        Set<String> allPlayerProfilesUUIDs = playersDataAccessor.getConfig().getConfigurationSection("Players").getKeys(false);
+        List<PlayerProfile> allPlayersProfiles = new ArrayList<>();
+
+        for (String playerUUID : allPlayerProfilesUUIDs)
+            allPlayersProfiles.add(loadPlayerProfile(UUID.fromString(playerUUID)));
+        return allPlayersProfiles;
+
     }
 
     public static PlayersDataController getInstance() {

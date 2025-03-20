@@ -10,6 +10,7 @@ public class Job {
     private final int id;
     private final String name;
     private final String description;
+    private final String rewardCommand;
     private final JobType type;
     private final JobCategory category;
     private final Material itemMaterial;
@@ -23,6 +24,7 @@ public class Job {
         private final int id;
         private String name;
         private String description;
+        private String rewardCommand;
         private JobType type;
         private JobCategory category;
         private Material itemMaterial;
@@ -41,6 +43,11 @@ public class Job {
 
         public JobBuilder withDescription(String description) {
             this.description = description;
+            return this;
+        }
+
+        public JobBuilder withCommand(String command) {
+            this.rewardCommand = command;
             return this;
         }
 
@@ -84,6 +91,7 @@ public class Job {
         this.id = builder.id;
         this.name = builder.name;
         this.description = builder.description;
+        this.rewardCommand = builder.rewardCommand;
         this.type = builder.type;
         this.category = builder.category;
         this.itemMaterial = builder.itemMaterial;

@@ -17,6 +17,10 @@ public class InventoryClick implements Listener {
 
         Inventory clickedInventory = event.getClickedInventory();
 
+        if (clickedInventory == null) return;
+
+        if (clickedInventory.getName() == null) return;
+
         for (GUIType guiType : GUIType.values()) {
             GUI gui = guiType.getGuiInstance();
             if (clickedInventory.getName().equalsIgnoreCase(gui.getName()))

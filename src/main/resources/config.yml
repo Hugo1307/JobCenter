@@ -1,6 +1,6 @@
 JobCenter:
   JobWeek:
-    StartDay: 'Monday'
+    StartDay: 1     # Number 1 corresponds to SUNDAY
 
   #Number of jobs needed to upgrade jobs category.
   JobsRank:
